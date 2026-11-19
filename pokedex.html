@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pokédex - Tipo Fuego</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --carbon: #16100e;
+    --obsidiana: #231815;
+    --brasa: #36221b;
+    --fuego-rojo: #d9381e;
+    --fuego-naranja: #f56a1c;
+    --fuego-dorado: #ffb72b;
+    --ceniza: #f7efe8;
+    --humo: #c4b0a3;
+    --borde-fuego: #543124;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--ceniza);
+    background-color: var(--carbon);
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(245, 106, 28, 0.16), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(217, 56, 30, 0.18), transparent 45%);
+    padding: 2rem 4vw 3.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    flex: 1;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: linear-gradient(135deg, var(--obsidiana) 0%, #2c1913 100%);
+    border: 2px solid var(--borde-fuego);
+    border-left: 6px solid var(--fuego-naranja);
+    border-radius: 16px;
+    padding: 1.2rem 1.6rem;
+    margin-bottom: 1.6rem;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .emblema-fuego {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--fuego-dorado) 0%, var(--fuego-naranja) 55%, var(--fuego-rojo) 100%);
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+    color: var(--carbon);
+    box-shadow: 0 0 20px rgba(245, 106, 28, 0.45);
+    flex: none;
+  }
+
+  h1 {
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.9rem, 4vw, 2.5rem);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ceniza);
+    line-height: 1.1;
+  }
+
+  .badge-tipo {
+    background: rgba(245, 106, 28, 0.15);
+    border: 1px solid var(--fuego-naranja);
+    border-radius: 10px;
+    padding: 0.45rem 0.95rem;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--fuego-dorado);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .favoritos-panel {
+    background: var(--obsidiana);
+    border: 2px solid var(--borde-fuego);
+    border-radius: 16px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1.6rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .favoritos-titulo {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--fuego-dorado);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .favoritos-grupos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1rem;
+  }
+
+  .rama-fav {
+    background: var(--carbon);
+    border: 1px solid var(--borde-fuego);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+  }
+
+  .rama-fav-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--humo);
+    margin-bottom: 0.65rem;
+  }
+
+  .fav-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .fav-chip {
+    background: var(--brasa);
+    color: var(--ceniza);
+    border: 1px solid #6e3d2b;
+    border-radius: 10px;
+    padding: 0.45rem 0.8rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: none;
+    transition: all 0.15s ease;
+  }
+
+  .fav-chip img {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated;
+    object-fit: contain;
+  }
+
+  .fav-chip:hover {
+    background: linear-gradient(135deg, var(--fuego-rojo), var(--fuego-naranja));
+    border-color: var(--fuego-dorado);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1.1rem;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: 0.95rem 1.2rem;
+    border: 2px solid var(--borde-fuego);
+    border-radius: 12px;
+    background: var(--obsidiana);
+    color: var(--ceniza);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  input[type="text"]::placeholder {
+    color: #8f776a;
+    font-weight: 500;
+  }
+
+  input[type="text"]:focus {
+    border-color: var(--fuego-naranja);
+    box-shadow: 0 0 0 3px rgba(245, 106, 28, 0.2);
+    outline: none;
+  }
+
+  button[type="submit"] {
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 700;
+    font-size: 1.08rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 0.95rem 1.8rem;
+    cursor: pointer;
+    border: 2px solid var(--fuego-dorado);
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--fuego-rojo) 0%, var(--fuego-naranja) 100%);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(217, 56, 30, 0.35);
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+
+  button[type="submit"]:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+  }
+
+  button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  #estado {
+    min-height: 1.5em;
+    margin-bottom: 1rem;
+    color: var(--fuego-dorado);
+    font-weight: 700;
+    font-size: 1rem;
+    padding-left: 4px;
+  }
+
+  #estado.error {
+    color: #ff6b6b;
+  }
+
+  .ficha {
+    background: var(--obsidiana);
+    border: 2px solid var(--borde-fuego);
+    border-radius: 16px;
+    padding: clamp(1.3rem, 3vw, 2rem);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  }
+
+  .principal {
+    display: flex;
+    gap: 26px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .pantalla {
+    background: radial-gradient(circle at center, #3b2016 0%, #170f0c 100%);
+    border: 2px solid var(--fuego-naranja);
+    border-radius: 14px;
+    width: 220px;
+    height: 220px;
+    display: grid;
+    place-items: center;
+    flex: none;
+    margin: 0 auto;
+    box-shadow: inset 0 0 24px rgba(245, 106, 28, 0.25), 0 0 16px rgba(217, 56, 30, 0.2);
+  }
+
+  .pantalla img {
+    width: 185px;
+    height: 185px;
+    image-rendering: pixelated;
+    object-fit: contain;
+  }
+
+  .datos {
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .datos .id {
+    display: inline-block;
+    background: rgba(255, 183, 43, 0.15);
+    border: 1px solid rgba(255, 183, 43, 0.4);
+    color: var(--fuego-dorado);
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.2rem 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.45rem;
+  }
+
+  .datos h2 {
+    margin: 4px 0 12px;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: clamp(1.9rem, 3.8vw, 2.5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--ceniza);
+  }
+
+  .descripcion {
+    line-height: 1.65;
+    font-size: 1.05rem;
+    color: var(--humo);
+    max-width: 60ch;
+  }
+
+  h3 {
+    margin-bottom: 1.1rem;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--fuego-dorado);
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid var(--borde-fuego);
+  }
+
+  .cadena {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nodo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ramas {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .flecha {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--fuego-naranja);
+    flex: none;
+  }
+
+  .evo-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mini {
+    width: 128px;
+    text-align: center;
+    padding: 10px 8px;
+    background: var(--carbon);
+    border: 2px solid var(--borde-fuego);
+    border-radius: 12px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+
+  .mini:hover {
+    transform: translateY(-2px);
+    border-color: var(--fuego-naranja);
+  }
+
+  .mini.actual {
+    background: linear-gradient(160deg, #3b1e14 0%, #24130d 100%);
+    border-color: var(--fuego-dorado);
+    box-shadow: 0 0 14px rgba(255, 183, 43, 0.25);
+  }
+
+  .mini.mega {
+    background: linear-gradient(160deg, #38181f 0%, #211014 100%);
+    border-color: #e04f5f;
+    width: 128px;
+  }
+
+  .mini img {
+    width: 86px;
+    height: 86px;
+    image-rendering: pixelated;
+    object-fit: contain;
+  }
+
+  .mini .n {
+    font-weight: 800;
+    text-transform: capitalize;
+    font-size: 0.92rem;
+    color: var(--ceniza);
+    display: block;
+    margin-top: 4px;
+  }
+
+  .mini .i {
+    color: var(--fuego-dorado);
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  .megas-fila {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .vacio,
+  .cargando-evo {
+    color: var(--humo);
+    font-weight: 600;
+    font-size: 0.96rem;
+  }
+
+  .cargando-evo {
+    font-style: italic;
+  }
+
+  .pie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1.4rem;
+    margin-top: 2.2rem;
+  }
+
+  .alumno,
+  .footer-creator {
+    padding: 1.4rem 1.7rem;
+    background: var(--obsidiana);
+    border: 2px solid var(--borde-fuego);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .alumno dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 7px 16px;
+    font-size: 0.95rem;
+  }
+
+  .alumno dt {
+    font-weight: 800;
+    color: var(--fuego-naranja);
+  }
+
+  .alumno dd {
+    color: var(--ceniza);
+    font-weight: 600;
+  }
+
+  .footer-creator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.8;
+    font-size: 0.96rem;
+    color: var(--humo);
+  }
+
+  .footer-creator strong {
+    color: var(--fuego-naranja);
+    font-weight: 800;
+  }
+
+  .footer-creator .author {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--ceniza);
+  }
+
+  .footer-creator a {
+    color: var(--fuego-dorado);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .footer-creator a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 580px) {
+    form {
+      flex-direction: column;
+    }
+
+    .nodo {
+      flex-direction: column;
+    }
+
+    .flecha {
+      transform: rotate(90deg);
+    }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="brand">
+      <div class="emblema-fuego" aria-hidden="true">
+        <i class="fa-solid fa-fire"></i>
+      </div>
+      <h1>Pokédex</h1>
+    </div>
+    <span class="badge-tipo"><i class="fa-solid fa-fire-flame-curved"></i> Edición Tipo Fuego</span>
+  </header>
+
+  <section class="favoritos-panel" aria-label="Pokémon favoritos de tipo fuego">
+    <div class="favoritos-titulo">
+      <i class="fa-solid fa-star"></i> Favoritos Tipo Fuego
+    </div>
+    <div class="favoritos-grupos">
+      <div class="rama-fav">
+        <span class="rama-fav-label">Línea evolutiva de Chimchar</span>
+        <div class="fav-chips">
+          <button type="button" class="fav-chip" data-pokemon="chimchar">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/390.png" alt="Chimchar">
+            Chimchar
+          </button>
+          <button type="button" class="fav-chip" data-pokemon="monferno">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/391.png" alt="Monferno">
+            Monferno
+          </button>
+          <button type="button" class="fav-chip" data-pokemon="infernape">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/392.png" alt="Infernape">
+            Infernape
+          </button>
+        </div>
+      </div>
+
+      <div class="rama-fav">
+        <span class="rama-fav-label">Línea evolutiva de Torchic</span>
+        <div class="fav-chips">
+          <button type="button" class="fav-chip" data-pokemon="torchic">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/255.png" alt="Torchic">
+            Torchic
+          </button>
+          <button type="button" class="fav-chip" data-pokemon="combusken">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/256.png" alt="Combusken">
+            Combusken
+          </button>
+          <button type="button" class="fav-chip" data-pokemon="blaziken">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/257.png" alt="Blaziken">
+            Blaziken
+          </button>
+          <button type="button" class="fav-chip" data-pokemon="blaziken-mega">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10050.png" alt="Mega Blaziken">
+            Mega Blaziken
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <form id="formulario">
+    <input type="text" id="busqueda" placeholder="Escribe un Pokémon (ej. chimchar, torchic, charizard)" autocomplete="off" aria-label="Nombre del Pokémon" required>
+    <button type="submit" id="boton"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+  </form>
+
+  <p id="estado" role="status" aria-live="polite"></p>
+  <section id="resultado"></section>
+
+  <div class="pie-grid">
+    <section class="alumno">
+      <h3>Datos del alumno</h3>
+      <dl>
+        <dt>Nombre</dt><dd>Royfran Rodrigo Santini Pacheco</dd>
+        <dt>Matrícula</dt><dd>68994</dd>
+        <dt>Grupo</dt><dd>5to "A"</dd>
+        <dt>Materia</dt><dd>Diseño Web</dd>
+        <dt>Profesor</dt><dd>Jose C Aguilar Canepa</dd>
+        <dt>Ejercicio</dt><dd>Pokédex</dd>
+      </dl>
+    </section>
+
+    <footer class="footer-creator">
+      <h3>Créditos</h3>
+      <p class="author"><strong>Creador:</strong> Rodrigo Santini</p>
+      <p class="career">Estudiante de Ingeniería de Software</p>
+      <p class="social">
+        <strong>Instagram:</strong> 
+        <a href="https://instagram.com/ronits.ss" target="_blank" rel="noopener noreferrer">@ronits.ss</a>
+      </p>
+    </footer>
+  </div>
+</main>
+
+<script>
+  const API = "https://pokeapi.co/api/v2";
+  const $ = (id) => document.getElementById(id);
+  const formulario = $("formulario");
+  const busqueda = $("busqueda");
+  const boton = $("boton");
+  const estado = $("estado");
+  const resultado = $("resultado");
+
+  let busquedaActual = 0;
+
+  async function pedir(url) {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(r.status === 404 ? "404" : "HTTP " + r.status);
+    return r.json();
+  }
+
+  function idDeUrl(url) {
+    return url.split("/").filter(Boolean).pop();
+  }
+
+  function limpiarTexto(t) {
+    return t.replace(/[\n\f\r]/g, " ").replace(/\s+/g, " ").trim();
+  }
+
+  function spriteDe(p) {
+    return (
+      p.sprites.other?.["official-artwork"]?.front_default ||
+      p.sprites.front_default ||
+      ""
+    );
+  }
+
+  function escapar(s) {
+    const d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function nombreBonito(nombre) {
+    return nombre.replace(/-/g, " ");
+  }
+
+  function setEstado(msg, esError = false) {
+    estado.textContent = msg;
+    estado.className = esError ? "error" : "";
+  }
+
+  function pintarPokemon(p) {
+    resultado.innerHTML = `
+      <article class="ficha">
+        <div class="principal">
+          <div class="pantalla">
+            <img src="${p.sprites.front_default || spriteDe(p)}" alt="Sprite de ${escapar(p.name)}">
+          </div>
+          <div class="datos">
+            <p class="id">N.º ${p.id}</p>
+            <h2>${escapar(nombreBonito(p.name))}</h2>
+            <p class="descripcion" id="descripcion"><span class="cargando-evo">Buscando descripción…</span></p>
+          </div>
+        </div>
+      </article>
+      <article class="ficha" id="fichaEvo">
+        <h3>Cadena evolutiva</h3>
+        <div id="evolucion"><p class="cargando-evo">Buscando cadena evolutiva…</p></div>
+      </article>`;
+  }
+
+  function descripcionEnEspanol(especie) {
+    const entradas = especie.flavor_text_entries.filter((e) => e.language.name === "es");
+    if (!entradas.length) return null;
+    return limpiarTexto(entradas[entradas.length - 1].flavor_text);
+  }
+
+  async function datosDeEspecie(nombreEspecie) {
+    const especie = await pedir(`${API}/pokemon-species/${nombreEspecie}`);
+    const variedadBase = especie.varieties.find((v) => v.is_default) || especie.varieties[0];
+    const base = await pedir(variedadBase.pokemon.url);
+
+    const variedadesMega = especie.varieties.filter(
+      (v) => !v.is_default && /-mega(-|$)/.test(v.pokemon.name)
+    );
+    const megas = await Promise.all(
+      variedadesMega.map(async (v) => {
+        try {
+          const m = await pedir(v.pokemon.url);
+          return { nombre: m.name, id: m.id, sprite: spriteDe(m) };
+        } catch {
+          return null;
+        }
+      })
+    );
+
+    return {
+      nombre: especie.name,
+      id: especie.id,
+      sprite: spriteDe(base),
+      megas: megas.filter(Boolean),
+    };
+  }
+
+  async function construirArbol(eslabon) {
+    const [datos, hijos] = await Promise.all([
+      datosDeEspecie(eslabon.species.name),
+      Promise.all(eslabon.evolves_to.map(construirArbol)),
+    ]);
+    return { ...datos, hijos };
+  }
+
+  function htmlMini(d, extra = "") {
+    return `
+      <div class="mini ${extra}">
+        <img src="${d.sprite}" alt="${escapar(d.nombre)}" loading="lazy">
+        <span class="n">${escapar(nombreBonito(d.nombre))}</span>
+        <span class="i">N.º ${d.id}</span>
+      </div>`;
+  }
+
+  function htmlNodo(n, nombreBuscado) {
+    const actual = n.nombre === nombreBuscado ? "actual" : "";
+    const megas = n.megas.length
+      ? `<div class="megas-fila">${n.megas.map((m) => htmlMini(m, "mega")).join("")}</div>`
+      : "";
+    const ramas = n.hijos.length
+      ? `<span class="flecha" aria-hidden="true">→</span>
+         <div class="ramas">${n.hijos.map((h) => htmlNodo(h, nombreBuscado)).join("")}</div>`
+      : "";
+    return `
+      <div class="nodo">
+        <div class="evo-col">${htmlMini(n, actual)}${megas}</div>
+        ${ramas}
+      </div>`;
+  }
+
+  function pintarEvolucion(arbol, nombreBuscado) {
+    const contenedor = $("evolucion");
+    const sinEvolucion = !arbol.hijos.length;
+    contenedor.innerHTML =
+      htmlNodo(arbol, nombreBuscado) +
+      (sinEvolucion && !arbol.megas.length
+        ? `<p class="vacio">Este Pokémon no evoluciona.</p>`
+        : "");
+    const hayMegas = JSON.stringify(arbol).includes('"megas":[{');
+    if (hayMegas) {
+      const nota = document.createElement("p");
+      nota.className = "vacio";
+      nota.style.marginTop = "14px";
+      nota.textContent = "Las tarjetas carmesí son Megaevoluciones.";
+      contenedor.appendChild(nota);
+    }
+  }
+
+  async function buscar(texto) {
+    const id = ++busquedaActual;
+    const nombre = texto.trim().toLowerCase().replace(/\s+/g, "-");
+    if (!nombre) return;
+
+    boton.disabled = true;
+    resultado.innerHTML = "";
+    setEstado("Buscando…");
+
+    try {
+      const pokemon = await pedir(`${API}/pokemon/${encodeURIComponent(nombre)}`);
+      if (id !== busquedaActual) return;
+      pintarPokemon(pokemon);
+      setEstado("");
+
+      const especie = await pedir(pokemon.species.url);
+      if (id !== busquedaActual) return;
+
+      const descripcion = descripcionEnEspanol(especie);
+      $("descripcion").textContent = descripcion || "No hay descripción en español para este Pokémon.";
+
+      const cadena = await pedir(especie.evolution_chain.url);
+      const arbol = await construirArbol(cadena.chain);
+      if (id !== busquedaActual) return;
+
+      pintarEvolucion(arbol, especie.name);
+    } catch (err) {
+      if (id !== busquedaActual) return;
+      if (err.message === "404" && !$("descripcion")) {
+        setEstado(`No encontré a "${texto.trim()}". Revisa el nombre (en inglés) o prueba con su número.`, true);
+      } else if (!$("descripcion")) {
+        setEstado("No se pudo conectar con la PokéAPI. Revisa tu conexión e inténtalo de nuevo.", true);
+      } else {
+        setEstado("Se cargó el Pokémon, pero falló la carga de su descripción o evolución.", true);
+      }
+    } finally {
+      if (id === busquedaActual) boton.disabled = false;
+    }
+  }
+
+  document.querySelectorAll(".fav-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const poke = chip.dataset.pokemon;
+      busqueda.value = poke;
+      buscar(poke);
+    });
+  });
+
+  formulario.addEventListener("submit", (e) => {
+    e.preventDefault();
+    buscar(busqueda.value);
+  });
+</script>
+</body>
+</html>
